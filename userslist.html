@@ -1,0 +1,6 @@
+{% for user in users %}
+    <p>{{ user.username }} - {{ user.email }}</p>
+    <a href="{% url 'delete_user' user.id %}" onclick="return confirm('Are you sure you want to delete this user?');">
+        Delete
+    </a>
+{% endfor %}

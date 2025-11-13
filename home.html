@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Home - WorkerForHome{% endblock %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="../static/css/home.css">
+
+<!-- Hero Section -->
+<section class="hero bg-light text-center py-5">
+    <div class="container">
+        <h1 class="display-4 fw-bold text-primary">Welcome to WorkerForHome</h1>
+        <p class="lead">Find trusted workers for your home services with ease.</p>
+        <a href="#services" class="btn btn-primary btn-lg mt-3">Get Started</a>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section py-4 bg-white shadow-sm">
+    <div class="container text-center">
+        <form method="get" action="{% url 'search_workers' %}" class="d-flex justify-content-center">
+            <input type="text" name="q" class="form-control w-50 me-2"
+                   placeholder="Search workers by name, service, or location" value="{{ query }}">
+            <button type="submit" class="btn btn-dark">Search</button>
+        </form>
+    </div>
+</section>
+
+<!-- Popular Services -->
+<section id="services" class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4 text-primary">Popular Services</h2>
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <img src="{% static '/image/plumber.jpg' %}" class="mx-auto" width="60">
+                    <h5 class="mt-3">Plumber</h5>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <img src="{% static 'image/electrician.jpg' %}" class="mx-auto" width="60">
+                    <h5 class="mt-3">Electrician</h5>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <img src="{% static 'image/carpenter.jpg' %}" class="mx-auto" width="60">
+                    <h5 class="mt-3">Carpenter</h5>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card shadow-sm p-3">
+                    <img src="{% static 'image/cleaning-service.jpeg' %}" class="mx-auto" width="60">
+                    <h5 class="mt-3">Cleaning</h5>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Why Choose Us -->
+<section class="py-5">
+    <div class="container text-center">
+        <h2 class="text-primary mb-4">Why Choose WorkerForHome?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h4>✅ Trusted Workers</h4>
+                    <p>Verified professionals with experience you can rely on.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h4>⚡ Quick Booking</h4>
+                    <p>Book workers instantly at your preferred time and location.</p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card p-4 shadow-sm">
+                    <h4>💰 Affordable Rates</h4>
+                    <p>Transparent pricing with no hidden charges.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Available Workers -->
+<section class="py-5 bg-light">
+    <div class="container text-center">
+        <h2 class="mb-4 text-primary">Available Workers</h2>
+        <div class="row g-4">
+            {% for worker in workers %}
+            <div class="col-md-4">
+                <div class="card shadow-sm h-100">
+                    <div class="card-body text-center">
+                        {% if worker.profile_pic %}
+                            <img src="{{ worker.profile_pic.url }}" class="rounded-circle mb-3" width="100" height="100">
+                        {% else %}
+                            <img src="{% static 'images/default_profile.png' %}" class="rounded-circle mb-3" width="100" height="100">
+                        {% endif %}
+                        <h5 class="card-title">{{ worker.user.username }}</h5>
+                        <p><strong>Service:</strong> {{ worker.service_type }}</p>
+                        <p><strong>Location:</strong> {{ worker.location }}</p>
+                        <p><strong>Rate:</strong> ₹{{ worker.hourly_rate }}/hr</p>
+                        <p><strong>Rating:</strong>
+                            {% if worker.avg_rating %}
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= worker.avg_rating|floatformat:0 %}
+                                        ⭐
+                                    {% else %}
+                                        ☆
+                                    {% endif %}
+                                {% endfor %}
+                                <span>({{ worker.avg_rating|floatformat:1 }}/5)</span>
+                            {% else %}
+                                <span>No ratings</span>
+                            {% endif %}
+                        </p>
+                        {% if user.is_authenticated %}
+                            <a href="{% url 'create_booking' worker.id %}" class="btn btn-success">Book Now</a>
+                        {% else %}
+                            <a href="{% url 'login' %}" class="btn btn-warning">Login to Book</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% empty %}
+            <p>No workers available right now.</p>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Call To Action -->
+<section class="cta-section bg-primary text-white text-center py-5">
+    <div class="container">
+        <h2>Need a reliable worker today?</h2>
+        <p class="mb-4">Join WorkerForHome and get your tasks done by trusted professionals.</p>
+        {% if user.is_authenticated %}
+            <a href="{% url 'customer_dashboard' %}" class="btn btn-light btn-lg">Go to Dashboard</a>
+        {% else %}
+            <a href="{% url 'register' %}" class="btn btn-light btn-lg">Sign Up Now</a>
+        {% endif %}
+    </div>
+</section>
+
+{% endblock %}
+

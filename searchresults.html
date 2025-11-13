@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Search Results - Worker For Home{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Search Results for "{{ query }}"</h2>
+
+    <div class="worker-cards mt-4">
+        {% for worker in workers %}
+            <div class="worker-card">
+                {% if worker.profile_pic %}
+                    <img src="{{ worker.profile_pic.url }}" alt="{{ worker.user.username }}">
+                {% else %}
+                    <img src="{% static 'images/default-profile.png' %}" alt="Default profile">
+                {% endif %}
+                <h3>{{ worker.user.username }}</h3>
+                <p><strong>Service:</strong> {{ worker.service_type }}</p>
+                <p><strong>Location:</strong> {{ worker.location }}</p>
+                <p><strong>Rate:</strong> ₹{{ worker.hourly_rate }}/hr</p>
+                <a href="{% url 'create_booking' worker.id %}" class="btn btn-success">Book Now</a>
+            </div>
+        {% empty %}
+            <p>No workers found for your search.</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

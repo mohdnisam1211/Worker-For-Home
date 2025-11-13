@@ -1,0 +1,35 @@
+.booking-card {
+  max-width: 600px;
+  margin: 0 auto;
+  border-radius: 12px;
+  padding: 20px;
+  background: #fff;
+}
+
+.booking-card h2 {
+  font-weight: bold;
+}
+
+form .mb-3 label {
+  font-weight: 500;
+}
+
+form input, form select, form textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  margin-top: 5px;
+}
+
+form input:focus, form textarea:focus, form select:focus {
+  outline: none;
+  border-color: #0d6efd;
+  box-shadow: 0px 0px 5px rgba(13, 110, 253, 0.5);
+}
+
+button {
+  border-radius: 8px;
+  padding: 10px;
+  font-size: 16px;
+}

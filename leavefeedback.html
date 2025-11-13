@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Leave Feedback{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm p-4">
+        <h2 class="mb-4">Leave Feedback for {{ booking.worker.username }}</h2>
+
+        <form method="post">
+            {% csrf_token %}
+
+            <!-- Star Rating -->
+            <div class="mb-3">
+                <label class="form-label">Rating:</label>
+                <div class="star-rating">
+                    {% for i in "54321" %}
+                        <input type="radio" id="star{{ i }}" name="rating" value="{{ i }}">
+                        <label for="star{{ i }}" title="{{ i }} stars">★</label>
+                    {% endfor %}
+                </div>
+                {% if form.rating.errors %}
+                    <div class="text-danger">{{ form.rating.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <!-- Comment -->
+            <div class="mb-3">
+                {{ form.comment.label_tag }}
+                {{ form.comment }}
+                {% if form.comment.errors %}
+                    <div class="text-danger">{{ form.comment.errors.0 }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-success">Submit Feedback</button>
+            <a href="{% url 'customer_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+
+<style>
+.star-rating {
+    direction: rtl;
+    display: inline-flex;
+    font-size: 2rem;
+}
+.star-rating input {
+    display: none;
+}
+.star-rating label {
+    color: #ccc;
+    cursor: pointer;
+}
+.star-rating input:checked ~ label,
+.star-rating label:hover,
+.star-rating label:hover ~ label {
+    color: gold;
+}
+</style>
+{% endblock %}

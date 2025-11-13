@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block title %}Edit Profile{% endblock %}
+ {% csrf_token %}
+{% block content %}
+<div class="container mt-4">
+    <h2 class="mb-4">Edit Profile</h2>
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <form method="post">
+                {% csrf_token %}
+
+                <!-- Phone -->
+                <div class="mb-3">
+                    <label for="phone" class="form-label">Phone</label>
+                    <input type="text" id="phone" name="phone" 
+                           value="{{ request.user.phone }}" class="form-control">
+                </div>
+
+                <!-- Location -->
+                <div class="mb-3">
+                    <label for="location" class="form-label">Location</label>
+                    <input type="text" id="location" name="location" 
+                           value="{{ profile.location }}" class="form-control">
+                </div>
+
+                <button type="submit" class="btn btn-success">Save Changes</button>
+                <a href="{% url 'customer_dashboard' %}" class="btn btn-secondary">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

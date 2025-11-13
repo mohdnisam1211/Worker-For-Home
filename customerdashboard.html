@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+{% load static %}
+ {% csrf_token %}
+{% block title %}Customer Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Customer Dashboard</h1>
+
+    <!-- Profile -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title">My Profile</h3>
+            <p><strong>Username:</strong> {{ request.user.username }}</p>
+            <p><strong>Email:</strong> {{ request.user.email }}</p>
+            <p><strong>Phone:</strong> {{ request.user.phone }}</p>
+            <p><strong>Location:</strong> {{ profile.location }}</p>
+
+            <a href="{% url 'edit_customer_profile' %}" class="btn btn-primary">Edit Profile</a>
+        </div>
+    </div>
+
+    <!-- My Bookings -->
+    <div class="card mb-4 shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title">My Bookings</h3>
+            {% if bookings %}
+                <ul class="list-group">
+                    {% for booking in bookings %}
+                        <li class="list-group-item">
+                            <strong>Worker:</strong> {{ booking.worker.username }} <br>
+                            <strong>Service:</strong> {{ booking.service }} <br>
+                            <strong>Date:</strong> {{ booking.date|date:"M d, Y H:i" }} <br>
+                            <strong>Status:</strong> {{ booking.status|title }}
+
+                            <!-- Cancel option -->
+                            {% if booking.status != "cancelled" and booking.status != "completed" %}
+                                <div class="mt-2">
+                                    <a href="{% url 'cancel_booking' booking.id %}" class="btn btn-danger btn-sm">Cancel</a>
+                                </div>
+                            {% endif %}
+
+                            <!-- Feedback -->
+                            {% if booking.status == "completed" %}
+                                {% if booking.feedback %}
+                                    <p class="mt-2">
+                                        <strong>Your Feedback:</strong>
+                                        <span class="text-warning">
+                                            {% for i in "12345"|slice:":booking.feedback.rating"|make_list %}★{% endfor %}
+                                        </span>
+                                        <br>
+                                        {{ booking.feedback.comment }}
+                                    </p>
+                                {% else %}
+                                    <a href="{% url 'leave_feedback' booking.id %}" class="btn btn-success btn-sm mt-2">Leave Feedback</a>
+                                {% endif %}
+                            {% endif %}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>You have not made any bookings yet.</p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+

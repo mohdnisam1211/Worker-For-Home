@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/login.css' %}">
+<link rel="stylesheet" href="../static/css/login.css">
+{% endblock %}
+
+{% block title %}Login - Worker For Home{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center" style="min-height: 80vh;">
+  <div class="card shadow-lg p-4 rounded-4" style="max-width: 400px; width: 100%;">
+    <h2 class="text-center mb-4">Login</h2>
+    
+    <form method="POST" class="needs-validation" novalidate>
+      {% csrf_token %}
+      {{ form.as_p }}
+
+      <button type="submit" class="btn btn-primary w-100 rounded-pill">Login</button>
+    </form>
+
+    <p class="text-center mt-3">
+      Don’t have an account? 
+      <a href="{% url 'register' %}" class="text-decoration-none">Register</a>
+    </p>
+  </div>
+</div>
+{% endblock %}
+
+
+

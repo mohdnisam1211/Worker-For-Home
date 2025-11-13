@@ -1,0 +1,119 @@
+
+.hero {
+    background: linear-gradient(to right, #ffffff, #ffffff);
+    color: white;
+    padding: 80px 20px;
+    border-radius: 10px;
+}
+.hero h1 {
+    color: rgb(0, 0, 0);
+    font-size: 3rem;
+    font-weight: bold;
+}
+.hero p {
+    color: rgb(0, 0, 0);
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+/* Search Section */
+.search-section {
+    background: #ffffff;
+    border-bottom: 2px solid #f1f1f1;
+    padding: 20px 0;
+}
+.search-section input {
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 10px;
+}
+.search-section button {
+    border-radius: 8px;
+    padding: 10px 20px;
+}
+
+/* Popular Services */
+#services {
+    background: #f8f9fa;
+    padding: 60px 0;
+}
+
+#services h2 {
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+#services .card {
+    border: none;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+#services .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+#services img {
+    width: 100px;
+    height: 100px;
+    object-fit: contain;
+    display: block;
+    margin: 0 auto;
+}
+
+#services h5 {
+    margin-top: 15px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #333;
+}
+
+/* Why Choose Us */
+#why-choose .card {
+    border: none;
+    background: #f8f9fa;
+    transition: transform 0.3s ease;
+}
+#why-choose .card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+/* Available Workers */
+#workers .card {
+    border: none;
+    transition: all 0.3s ease;
+}
+#workers.card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+}
+#workers img {
+    border: 3px solid #007bff;
+    padding: 3px;
+}
+
+/* CTA Section */
+.cta-section {
+    background: linear-gradient(to right, #007bff, #0056b3);
+    padding: 60px 20px;
+    border-radius: 10px;
+}
+.cta-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+}
+.cta-section p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+}
+.cta-section .btn {
+    padding: 12px 30px;
+    font-size: 1.1rem;
+    border-radius: 8px;
+}
+

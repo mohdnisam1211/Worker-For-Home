@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Profile{% endblock %}
+
+{% block content %}
+<div class="container mt-5 text-center">
+    <div class="card p-4 shadow-sm">
+        <h3>Are you sure you want to delete your profile?</h3>
+        <p>This action cannot be undone.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'worker_dashboard' %}" class="btn btn-secondary">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

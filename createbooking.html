@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Book Worker{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/booking.css' %}">
+
+<div class="container mt-5">
+    <div class="card shadow-sm booking-card">
+        <div class="card-body">
+            <h2 class="text-center text-primary mb-4">Book {{ worker.user.username }}</h2>
+
+            <form method="post">
+                {% csrf_token %}
+                {{ form.non_field_errors }}
+
+                <!-- Service -->
+                <div class="mb-3">
+                    {{ form.service.label_tag }}
+                    {{ form.service }}
+                    {% for error in form.service.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Date -->
+                <div class="mb-3">
+                    {{ form.date.label_tag }}
+                    {{ form.date }}
+                    {% for error in form.date.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <!-- Notes -->
+                <div class="mb-3">
+                    {{ form.notes.label_tag }}
+                    {{ form.notes }}
+                    {% for error in form.notes.errors %}
+                        <div class="text-danger">{{ error }}</div>
+                    {% endfor %}
+                </div>
+
+                <button type="submit" class="btn btn-success w-100">Confirm Booking</button>
+                <a href="{% url 'customer_dashboard' %}" class="btn btn-secondary w-100 mt-2">Cancel</a>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

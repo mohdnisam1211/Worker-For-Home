@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Worker Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <!-- Worker Profile Section -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h3 class="card-title">Welcome, {{ request.user.username }}</h3>
+
+            <!-- Profile Picture -->
+            <div class="text-center mb-3">
+                {% if profile.profile_pic %}
+                    <img src="{{ profile.profile_pic.url }}" alt="Profile Picture" class="rounded-circle" width="120" height="120">
+                {% else %}
+                    <img src="{% static 'images/default_profile.png' %}" alt="Default Profile" class="rounded-circle" width="120" height="120">
+                {% endif %}
+            </div>
+
+            <p><strong>Service:</strong> {{ profile.service_type }}</p>
+            <p><strong>Experience:</strong> {{ profile.experience_years }} years</p>
+            <p><strong>Rate:</strong> ₹{{ profile.hourly_rate }}/hr</p>
+            <p><strong>Location:</strong> {{ profile.location }}</p>
+            <p><strong>Status:</strong> 
+                {% if profile.status == "available" %}
+                    <span class="badge bg-success">Available</span>
+                {% elif profile.status == "busy" %}
+                    <span class="badge bg-danger">Busy</span>
+                {% else %}
+                    <span class="badge bg-secondary">Unavailable</span>
+                {% endif %}
+            </p>
+            <p><strong>Average Rating:</strong>
+                {% if profile.average_rating %}
+                    ⭐ {{ profile.average_rating|floatformat:1 }}/5
+                {% else %}
+                    No ratings yet
+                {% endif %}
+            </p>
+
+            <a href="{% url 'edit_worker_profile' %}" class="btn btn-primary">Edit Profile</a>
+        </div>
+    </div>
+
+    <!-- Job Notifications -->
+    <div class="card shadow-sm mb-4">
+        <div class="card-body">
+            <h4 class="card-title">Job Notifications</h4>
+            <ul class="list-group">
+                {% for job in jobs %}
+                    <li class="list-group-item">
+                        <!-- Customer name clickable -->
+                        <a href="{% url 'worker_view_customer_profile' job.customer.id %}">
+                            <strong>{{ job.customer.username }}</strong>
+                        </a>
+                        booked you for 
+                        <b>{{ profile.service_type }}</b> 
+                        on {{ job.date|date:"M d, Y H:i" }} 
+                        (Status: {{ job.status|title }})
+
+                        {% if job.status == "pending" %}
+                            <a href="{% url 'accept_booking' job.id %}" class="btn btn-success btn-sm">Accept</a>
+                            <a href="{% url 'reject_booking' job.id %}" class="btn btn-danger btn-sm">Reject</a>
+                    {% elif job.status == "confirmed" %}
+                        <a href="{% url 'complete_booking' job.id %}" class="btn btn-primary btn-sm">Mark Completed</a>
+                    {% endif %}
+                    </li>
+                {% empty %}
+                    <li class="list-group-item">No job notifications yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Customer Feedback -->
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h4 class="card-title">Customer Feedback</h4>
+            <ul class="list-group">
+                {% for feedback in profile.user.bookings.all %}
+                    {% if feedback.feedback %}
+                        <li class="list-group-item">
+                            <strong>{{ feedback.customer.username }}</strong> 
+                            ⭐ {{ feedback.feedback.rating }}<br>
+                            <em>{{ feedback.feedback.comment }}</em>
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="list-group-item">No feedback yet.</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

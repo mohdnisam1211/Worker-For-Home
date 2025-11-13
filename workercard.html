@@ -1,0 +1,36 @@
+<div class="worker-card">
+    {% if worker.profile_pic %}
+        <img src="{{ worker.profile_pic.url }}" alt="{{ worker.user.username }}">
+    {% else %}
+        <img src="{% static 'images/default-profile.png' %}" alt="Default profile">
+    {% endif %}
+    <h3>{{ worker.user.username }}</h3>
+    <p><strong>Service:</strong> {{ worker.service_type }}</p>
+    <p><strong>Location:</strong> {{ worker.location }}</p>
+    <p><strong>Rate:</strong> ₹{{ worker.hourly_rate }}/hr</p>
+    <p><strong>Rating:</strong>
+        {% if avg_rating %}
+            {% for i in "12345" %}
+                {% if forloop.counter <= avg_rating|floatformat:0 %}
+                    ⭐
+                {% else %}
+                    ☆
+                {% endif %}
+            {% endfor %}
+            <span>({{ avg_rating|floatformat:1 }}/5)</span>
+        {% else %}
+            <span>No ratings yet</span>
+        {% endif %}
+    </p>
+    <a href="{% url 'create_booking' worker.id %}" class="btn btn-success">Book Now</a>
+ 
+    {% if request.user.is_superuser or request.user.role == "admin" %}
+        <form method="post" action="{% url 'delete_worker' worker.id %}" style="margin-top:10px;">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger btn-sm"
+                onclick="return confirm('Are you sure you want to delete {{ worker.user.username }}?')">
+                Delete
+            </button>
+        </form>
+    {% endif %}
+</div>

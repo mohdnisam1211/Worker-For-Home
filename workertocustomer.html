@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Customer Details{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h3 class="card-title">Customer Details</h3>
+            
+            <p><strong>Username:</strong> {{ customer.username }}</p>
+            <p><strong>Email:</strong> {{ customer.email }}</p>
+            <p><strong>Phone:</strong> {{ customer.phone }}</p>
+            <p><strong>Location:</strong> {{ profile.location }}</p>
+
+            <h5 class="mt-4">Feedback</h5>
+            <ul class="list-group">
+                {% for feedback in customer.bookings.all %}
+                    {% if feedback.feedback %}
+                        <li class="list-group-item">
+                            ⭐ {{ feedback.feedback.rating }} - {{ feedback.feedback.comment }}
+                        </li>
+                    {% endif %}
+                {% empty %}
+                    <li class="list-group-item">No feedback yet.</li>
+                {% endfor %}
+            </ul>
+
+            <a href="{% url 'worker_dashboard' %}" class="btn btn-primary mt-3">Back to Dashboard</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
